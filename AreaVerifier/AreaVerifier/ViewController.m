@@ -19,7 +19,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    NSString * path = [[NSBundle mainBundle] pathForResource:@"room_dummy" ofType:@"jpg"];
+    NSString * path = [[NSBundle mainBundle] pathForResource:@"room_dummy2" ofType:@"jpg"];
     UIImage * image = [UIImage imageWithContentsOfFile:path];
     
     NSString * sizeStr = [NSString stringWithFormat:@"W - %f H - %f",image.size.width,image.size.height];

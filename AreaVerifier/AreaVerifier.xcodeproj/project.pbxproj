@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		949445FE208588DC008EA43E /* room_dummy2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 949445FD208588DC008EA43E /* room_dummy2.jpg */; };
 		94A5DCBE2084787300093E82 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 94A5DCBD2084787300093E82 /* AppDelegate.m */; };
 		94A5DCC12084787300093E82 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 94A5DCC02084787300093E82 /* ViewController.m */; };
 		94A5DCC42084787300093E82 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 94A5DCC22084787300093E82 /* Main.storyboard */; };
@@ -38,6 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		949445FD208588DC008EA43E /* room_dummy2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = room_dummy2.jpg; sourceTree = "<group>"; };
 		94A5DCB92084787300093E82 /* AreaVerifier.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AreaVerifier.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		94A5DCBC2084787300093E82 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		94A5DCBD2084787300093E82 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 				94A5DCC02084787300093E82 /* ViewController.m */,
 				94A5DCF1208478E800093E82 /* room_dummy.jpg */,
 				94A5DCC22084787300093E82 /* Main.storyboard */,
+				949445FD208588DC008EA43E /* room_dummy2.jpg */,
 				94A5DCC52084787300093E82 /* Assets.xcassets */,
 				94A5DCC72084787300093E82 /* LaunchScreen.storyboard */,
 				94A5DCCA2084787300093E82 /* Info.plist */,
@@ -254,6 +257,7 @@
 				94A5DCC92084787300093E82 /* LaunchScreen.storyboard in Resources */,
 				94A5DCC62084787300093E82 /* Assets.xcassets in Resources */,
 				94A5DCF2208478E800093E82 /* room_dummy.jpg in Resources */,
+				949445FE208588DC008EA43E /* room_dummy2.jpg in Resources */,
 				94A5DCC42084787300093E82 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

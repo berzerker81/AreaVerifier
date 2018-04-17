@@ -19,6 +19,8 @@
     AreaComponent * _bl;
     AreaComponent * _bc;
     AreaComponent * _br;
+    
+    UILabel       * _lbM;
 }
 
 
@@ -85,6 +87,12 @@
     _br.tLine  = LINETYPE_BOTTOM;
     
     _ptList = [NSArray arrayWithObjects:_tl,_tc,_tr,_bl,_bc,_br, nil];
+    
+    _lbM = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 30, 10)];
+    [_lbM setText:@"1M"];
+    [_lbM setFont:[UIFont systemFontOfSize:10]];
+    
+    [self addSubview:_lbM];
 }
 
 // Only override drawRect: if you perform custom drawing.
@@ -162,6 +170,12 @@
                    color:lineColor.CGColor
      ];
     
+    
+    //텍스트 표시
+    CGFloat txtY = _tc.center.y + (_bc.center.y - _tc.center.y) / 2;
+    CGFloat txtX = _tc.center.x + (_bc.center.x - _tc.center.x) / 2;
+    _lbM.center = CGPointMake(txtX, txtY);
+    
 }
 
 -(void)addLineContext:(CGContextRef)ctx from:(AreaComponent*)from to:(AreaComponent*)to color:(CGColorRef)color
@@ -220,20 +234,11 @@
         {
             if(eachComp.select)
             {
-//                if(eachComp.tInner != INNERTYPE_CENTER)
-//                {
-//                    //Left Right일때
-//                    [eachComp moveX:tPos.x];
-//                    //같은 열에 있는 Center를 중간 값으로 움직인다.
-//                    [self AlignCenterLineType:eachComp.tLine];
-//                    
-//                }else
-//                {
-//                    //중간 녀석일때..
-//                    [eachComp moveCenter:tPos];
-//                    //같은 열에 있는 모든 녀석의 Y를 변경해준다.
-//                    [self moveY:tPos.y lineType:eachComp.tLine];
-//                }
+                if(eachComp.tInner != INNERTYPE_CENTER)
+                {
+                    [eachComp moveCenter:tPos];
+                    [self AlignCenterLineType:eachComp.tLine];
+                }
             }
         }
     }
@@ -270,7 +275,8 @@
     if(pLeft && pRight && pTarget)
     {
         CGFloat posX = pLeft.center.x + (pRight.center.x - pLeft.center.x)/2;
-        [pTarget moveX:posX];
+        CGFloat posY = pLeft.center.y + (pRight.center.y - pLeft.center.y)/2;
+        [pTarget moveCenter:CGPointMake(posX, posY)];
     }
     
 }
