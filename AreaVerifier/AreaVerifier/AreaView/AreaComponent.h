@@ -37,3 +37,4 @@ typedef enum {
 -(void)moveX:(CGFloat)xPos;
 -(void)moveY:(CGFloat)yPos;
 @end
+
