@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "AreaView.h"
+
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *roomImage;
 @property (weak, nonatomic) IBOutlet UILabel *lbImage;
@@ -29,6 +29,18 @@
     // Do any additional setup after loading the view, typically from a nib.
 }
 
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    
+    AreaView * arv = (AreaView*)[self.view viewWithTag:10];
+    if(arv)
+    {
+       [arv redraw:self.roomImage.frame];
+    }
+    
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -40,6 +52,7 @@
     {
         AreaView * arv = [[AreaView alloc] initWithFrame:self.roomImage.frame];
         arv.tag = 10;
+        arv.delegate = self;
         arv.backgroundColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.5];
         [self.view addSubview:arv];
         
@@ -51,6 +64,18 @@
     
     
     sender.selected = !sender.selected;
+}
+
+#pragma mark - delegate
+
+- (CGSize)AreaViewStandardCoordinate
+{
+    return CGSizeMake(1000, 1000);
+}
+
+- (void)AreaViewStandardCoordinate:(CGSize)coordi points:(NSArray *)points
+{
+    NSLog(@"%@",points);
 }
 
 

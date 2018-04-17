@@ -9,6 +9,8 @@
 #import "AreaView.h"
 #import "AreaComponent.h"
 
+#define TYPE_1
+
 @implementation AreaView
 {
     NSArray       * _ptList;
@@ -20,9 +22,20 @@
     AreaComponent * _bc;
     AreaComponent * _br;
     
-    UILabel       * _lbM;
+    CGSize          _coordi;
+    
 }
 
+-(void)dealloc
+{
+    _ptList = nil;
+    _tl     = nil;
+    _tc     = nil;
+    _tr     = nil;
+    _bl     = nil;
+    _bc     = nil;
+    _br     = nil;
+}
 
 -(id)initWithFrame:(CGRect)frame
 {
@@ -88,17 +101,20 @@
     
     _ptList = [NSArray arrayWithObjects:_tl,_tc,_tr,_bl,_bc,_br, nil];
     
-    _lbM = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 30, 10)];
-    [_lbM setText:@"1M"];
-    [_lbM setFont:[UIFont systemFontOfSize:10]];
+
     
-    [self addSubview:_lbM];
+//    _lbM = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 30, 10)];
+//    [_lbM setText:@"1M"];
+//    [_lbM setFont:[UIFont systemFontOfSize:10]];
+//
+//    [self addSubview:_lbM];
 }
 
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect {
     // Drawing code
+    
     
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     
@@ -117,9 +133,9 @@
         
         if(comp.tInner == INNERTYPE_CENTER)
         {
-            CGContextAddRect(ctx, comp.rect);
-            CGContextFillRect(ctx, comp.rect);
-            CGContextStrokeRect(ctx, comp.rect);
+//            CGContextAddRect(ctx, comp.rect);
+//            CGContextFillRect(ctx, comp.rect);
+//            CGContextStrokeRect(ctx, comp.rect);
         }else
         {
             CGContextAddEllipseInRect(ctx, comp.rect);
@@ -172,9 +188,9 @@
     
     
     //텍스트 표시
-    CGFloat txtY = _tc.center.y + (_bc.center.y - _tc.center.y) / 2;
-    CGFloat txtX = _tc.center.x + (_bc.center.x - _tc.center.x) / 2;
-    _lbM.center = CGPointMake(txtX, txtY);
+//    CGFloat txtY = _tc.center.y + (_bc.center.y - _tc.center.y) / 2;
+//    CGFloat txtX = _tc.center.x + (_bc.center.x - _tc.center.x) / 2;
+//    _lbM.center = CGPointMake(txtX, txtY);
     
 }
 
@@ -197,14 +213,12 @@
     CGContextSetStrokeColorWithColor(ctx, color);
     CGContextStrokePath(ctx);
 }
-
+#pragma mark - touch
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     for (UITouch* t in touches)
     {
         CGPoint tPos = [t locationInView:self];
-        NSLog(@"touch Loc %@",NSStringFromCGPoint(tPos));
-        
         
         for (AreaComponent * eachComp in _ptList)
         {
@@ -228,7 +242,6 @@
     for (UITouch* t in touches)
     {
         CGPoint tPos = [t locationInView:self];
-        NSLog(@"touch Loc %@",NSStringFromCGPoint(tPos));
         
         for (AreaComponent * eachComp in _ptList)
         {
@@ -246,6 +259,66 @@
    [self setNeedsDisplay];
     
 }
+
+-(void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    for (UITouch* t in touches)
+    {
+        
+        for (AreaComponent * eachComp in _ptList)
+        {
+            eachComp.select = NO;
+        }
+        
+    }
+    
+    [self setNeedsDisplay];
+    
+    if(self.delegate!=nil && [(id)self.delegate respondsToSelector:@selector(AreaViewStandardCoordinate)])
+    {
+        _coordi = [(id)self.delegate AreaViewStandardCoordinate];
+    }
+    
+    //기준 좌표로 변환
+    CGPoint (^transCoordi)(CGPoint) = ^(CGPoint pt)
+    {
+        CGSize sourSize = self.frame.size;
+        
+        CGFloat tX = pt.x / sourSize.width  * _coordi.width;
+        CGFloat tY = pt.y / sourSize.height * _coordi.height;
+        
+        return CGPointMake(tX, tY);
+    };
+    
+#define TR(x) transCoordi(x)
+    
+    
+    
+    
+    if(self.delegate != nil && [(id)self.delegate respondsToSelector:@selector(AreaViewStandardCoordinate:points:)])
+    {
+//        AreaPoint * pt1 = [[AreaPoint alloc] initWithPoint:CGPointMake(_tl.center.x, _tl.center.y)];
+//        AreaPoint * pt2 = [[AreaPoint alloc] initWithPoint:CGPointMake(_tr.center.x, _tr.center.y)];
+//        AreaPoint * pt3 = [[AreaPoint alloc] initWithPoint:CGPointMake(_bl.center.x, _bl.center.y)];
+//        AreaPoint * pt4 = [[AreaPoint alloc] initWithPoint:CGPointMake(_br.center.x, _br.center.y)];
+        
+        AreaPoint * pt1 = [[AreaPoint alloc] initWithPoint:TR(_tl.center)];
+        AreaPoint * pt2 = [[AreaPoint alloc] initWithPoint:TR(_tr.center)];
+        AreaPoint * pt3 = [[AreaPoint alloc] initWithPoint:TR(_bl.center)];
+        AreaPoint * pt4 = [[AreaPoint alloc] initWithPoint:TR(_br.center)];
+        
+        [(id)self.delegate AreaViewStandardCoordinate:_coordi points:@[pt1,pt2,pt3,pt4]];
+        
+        pt1 = nil;
+        pt2 = nil;
+        pt3 = nil;
+        pt4 = nil;
+    }
+    
+#undef TR
+}
+
+#pragma mark - align
 //Left OR Right의 같은 열에 있는 Center의 X값을 움직인다.
 -(void)AlignCenterLineType:(LINETYPE)type
 {
@@ -293,24 +366,48 @@
     }
 }
 
+#pragma mark - redraw
 
--(void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+//화면이 바뀔때 좌표 변환을 거친 후 모두 다시 그려준다.
+-(void)redraw:(CGRect)frame
 {
-    for (UITouch* t in touches)
+    CGRect before = self.frame;
+    
+    self.frame = frame;
+    
+    //비율 구함
+    CGFloat offsetX =  frame.size.width  / before.size.width;
+    CGFloat offsetY =  frame.size.height / before.size.height;
+    
+    for (AreaComponent * eachComp in _ptList)
     {
-        CGPoint tPos = [t locationInView:self];
-        NSLog(@"touch Loc %@",NSStringFromCGPoint(tPos));
-        
-        for (AreaComponent * eachComp in _ptList)
-        {
-            eachComp.select = NO;
-        }
-        
+        //해당 비율만큼 좌표 이동 후 다시 그려준다.
+        CGPoint translatePt = CGPointMake(eachComp.center.x * offsetX,
+                                          eachComp.center.y*offsetY);
+        [eachComp moveCenter:translatePt];
     }
     
-   [self setNeedsDisplay];
+    [self setNeedsDisplay];
 }
 
-
-
 @end
+
+
+
+@implementation AreaPoint
+-(id)initWithPoint:(CGPoint)pt
+{
+    self = [super init];
+    
+    if(self)
+    {
+        _x = pt.x;
+        _y = pt.y;
+    }
+    
+    return self;
+}
+@end
+
+
+
