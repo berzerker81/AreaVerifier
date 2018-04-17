@@ -220,20 +220,20 @@
         {
             if(eachComp.select)
             {
-                if(eachComp.tInner != INNERTYPE_CENTER)
-                {
-                    //Left Right일때
-                    [eachComp moveX:tPos.x];
-                    //같은 열에 있는 Center를 중간 값으로 움직인다.
-                    [self AlignCenterLineType:eachComp.tLine];
-                    
-                }else
-                {
-                    //중간 녀석일때..
-                    [eachComp moveCenter:tPos];
-                    //같은 열에 있는 모든 녀석의 Y를 변경해준다.
-                    [self moveY:tPos.y lineType:eachComp.tLine];
-                }
+//                if(eachComp.tInner != INNERTYPE_CENTER)
+//                {
+//                    //Left Right일때
+//                    [eachComp moveX:tPos.x];
+//                    //같은 열에 있는 Center를 중간 값으로 움직인다.
+//                    [self AlignCenterLineType:eachComp.tLine];
+//                    
+//                }else
+//                {
+//                    //중간 녀석일때..
+//                    [eachComp moveCenter:tPos];
+//                    //같은 열에 있는 모든 녀석의 Y를 변경해준다.
+//                    [self moveY:tPos.y lineType:eachComp.tLine];
+//                }
             }
         }
     }
